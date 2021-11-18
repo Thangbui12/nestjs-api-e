@@ -12,8 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { userRole } from 'src/common/common.constans';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesGuard } from 'src/common/guards/role.guards';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
+import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { CreateUserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
@@ -34,13 +38,17 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @Get()
   @ApiBearerAuth('AccessToken')
-  @UseGuards(JwtAuthGuard)
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async findAll() {
     return this.usersService.findAll();
   }
 
   @ApiTags('User')
   @ApiOperation({ summary: 'Get one user by ID' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.usersService.findOneById(id);
@@ -56,7 +64,10 @@ export class UsersController {
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('AccessToken')
   @ApiOperation({ summary: 'Get user by Email' })
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('email/:slug')
   async findOneByEmail(@Param('slug') slug: string) {
     if (!slug) {
@@ -78,5 +89,16 @@ export class UsersController {
   @Put('forgot-password')
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return await this.usersService.forgotPassword(forgotPasswordDto);
+  }
+
+  @ApiTags('User')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Reset Password' })
+  @Put('reset-password/:token')
+  async resetPassword(
+    @Param('token') token: string,
+    @Body() resetPasswordDto: ResetPasswordDto,
+  ) {
+    return await this.usersService.resetPassword(token, resetPasswordDto);
   }
 }

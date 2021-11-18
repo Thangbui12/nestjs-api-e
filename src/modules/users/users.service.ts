@@ -17,6 +17,8 @@ import { CreateUserDto } from './dtos/user.dto';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
 import { IUserDoc } from './interfaces/user.interface';
 import { MailerService } from '@nestjs-modules/mailer';
+import { ResetPasswordDto } from './dtos/resetPassword.dto';
+import { ChangePasswordDto } from './dtos/user-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,9 +31,12 @@ export class UsersService {
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<IUserDoc> {
-    const { username } = createUserDto;
-    const user = await this.userModel.findOne({ username });
-    if (user) {
+    const { username, email } = createUserDto;
+    const userExitsted = await this.userModel.findOne({ username });
+    const emailExisted = await this.userModel.findOne({ email });
+
+    console.log(email);
+    if (!!userExitsted || !!emailExisted) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
 
@@ -46,7 +51,6 @@ export class UsersService {
 
   async findOneById(id: string): Promise<IUserDoc> {
     const user = await this.userModel.findById({ _id: id });
-    console.log(user);
     if (!user) {
       throw new NotFoundException('User not exists!');
     }
@@ -99,13 +103,60 @@ export class UsersService {
     };
   }
 
+  async resetPassword(
+    token: string,
+    resetPasswordDto: ResetPasswordDto,
+  ): Promise<any> {
+    const user = await this.userModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpired: { $gte: moment().toDate() },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Token not expires or User not existed');
+    }
+
+    const hashed = await bcrypt.hash(resetPasswordDto.password, 10);
+
+    await user.updateOne({
+      password: hashed,
+    });
+
+    return {
+      message: 'Password has changed!',
+    };
+  }
+
+  async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
+    const user = await this.findOneById(id);
+    await this.checkPassword(
+      changePasswordDto.password,
+      changePasswordDto.currentPassword,
+    );
+    const { salt, hashed } = await this.hashPassword(
+      changePasswordDto.password,
+    );
+
+    user.salt = salt;
+    user.password = hashed;
+
+    await user.save();
+  }
+
   //METHOD
-  async checkPassword(loginPassword: string, user: any): Promise<boolean> {
-    const match = await bcrypt.compare(loginPassword, user.password);
+  async checkPassword(
+    password: string,
+    currentPassword: string,
+  ): Promise<boolean> {
+    const match = await bcrypt.compare(password, currentPassword);
     if (!match) {
       throw new NotFoundException('Wrong email or password');
     }
     return match;
+  }
+
+  async validatorUser(username: string, email: string): Promise<any> {
+    return this.userModel.findOne({ username, email });
   }
 
   async sendMailer(email: string, subject: string, text: string): Promise<any> {
@@ -118,5 +169,14 @@ export class UsersService {
     } catch (err) {
       console.log('ERROR', err.message);
     }
+  }
+
+  async hashPassword(password: string) {
+    const salt = await bcrypt.genSalt();
+    const hashed = await bcrypt.hash(password, salt);
+    return {
+      salt,
+      hashed,
+    };
   }
 }

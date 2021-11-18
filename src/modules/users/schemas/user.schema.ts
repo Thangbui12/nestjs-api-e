@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 import * as bcrypt from 'bcrypt';
+import { userRole } from '../../../common/common.constans';
 
 const USER_MODEL = 'users';
 
@@ -24,6 +25,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  salt: {
+    type: String,
+  },
+  role: {
+    type: String,
+    enum: userRole,
+    default: userRole.User,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
@@ -34,11 +43,6 @@ const UserSchema = new mongoose.Schema({
   },
   resetPasswordExpired: {
     type: Date,
-  },
-  isAdmin: {
-    type: Boolean,
-    select: true,
-    default: false,
   },
   avatar: {
     type: String,

@@ -19,7 +19,7 @@ import { UsersModule } from './modules/users/users.module';
         transport: {
           host: process.env.MAIL_SERVICE,
           port: 587,
-          secure: true,
+          secure: false,
           auth: {
             user: process.env.MAIL_USER,
             pass: process.env.MAIL_PASSWORD,
