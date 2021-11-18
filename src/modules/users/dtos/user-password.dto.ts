@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @ApiProperty({
-    example: 'newpassword',
+    example: 'Password123',
     required: true,
     format: 'string',
     minLength: 8,
@@ -13,11 +13,18 @@ export class ChangePasswordDto {
   @IsString()
   @MinLength(6)
   @MaxLength(40)
-  readonly password: string;
+  readonly currentPassword: string;
 
+  @ApiProperty({
+    example: 'NewPAssword',
+    required: true,
+    format: 'string',
+    minLength: 8,
+    maxLength: 40,
+  })
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
   @MaxLength(40)
-  readonly currentPassword: string;
+  readonly newPassword: string;
 }

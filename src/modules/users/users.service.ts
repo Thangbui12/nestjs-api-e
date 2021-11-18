@@ -35,7 +35,6 @@ export class UsersService {
     const userExitsted = await this.userModel.findOne({ username });
     const emailExisted = await this.userModel.findOne({ email });
 
-    console.log(email);
     if (!!userExitsted || !!emailExisted) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
@@ -127,30 +126,31 @@ export class UsersService {
     };
   }
 
-  async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
+  async changePassword(
+    id: string,
+    changePasswordDto: ChangePasswordDto,
+  ): Promise<any> {
     const user = await this.findOneById(id);
-    await this.checkPassword(
-      changePasswordDto.password,
-      changePasswordDto.currentPassword,
-    );
+
+    await this.checkPassword(changePasswordDto.currentPassword, user.password);
     const { salt, hashed } = await this.hashPassword(
-      changePasswordDto.password,
+      changePasswordDto.newPassword,
     );
 
-    user.salt = salt;
-    user.password = hashed;
-
-    await user.save();
+    await user.updateOne({ password: hashed, salt: salt });
+    return {
+      message: 'Password changed!',
+    };
   }
 
   //METHOD
   async checkPassword(
-    password: string,
+    passwordIn: string,
     currentPassword: string,
   ): Promise<boolean> {
-    const match = await bcrypt.compare(password, currentPassword);
+    const match = await bcrypt.compare(passwordIn, currentPassword);
     if (!match) {
-      throw new NotFoundException('Wrong email or password');
+      throw new NotFoundException('Wrong current password');
     }
     return match;
   }

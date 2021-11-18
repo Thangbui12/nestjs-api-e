@@ -18,6 +18,7 @@ import { RolesGuard } from 'src/common/guards/role.guards';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
 import { ResetPasswordDto } from './dtos/resetPassword.dto';
+import { ChangePasswordDto } from './dtos/user-password.dto';
 import { CreateUserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
@@ -81,7 +82,12 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Change password' })
   @Put(':id/change-password')
-  async changeUserPassword(@Param('id') id: string) {}
+  async changeUserPassword(
+    @Param('id') id: string,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    return await this.usersService.changePassword(id, changePasswordDto);
+  }
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)

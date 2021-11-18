@@ -8,10 +8,10 @@ export class CreateUserDto {
     required: true,
     format: 'string',
     minLength: 6,
-    maxLength: 24,
+    maxLength: 255,
   })
   @IsString()
-  @Length(6, 24)
+  @Length(6, 255)
   @IsNotEmpty()
   readonly username: string;
 
@@ -21,11 +21,11 @@ export class CreateUserDto {
     required: true,
     format: 'email',
     minLength: 6,
-    maxLength: 24,
+    maxLength: 255,
   })
   @IsString()
   @IsEmail()
-  @Length(6, 24)
+  @Length(6, 255)
   @IsNotEmpty()
   readonly email: string;
 
@@ -35,10 +35,10 @@ export class CreateUserDto {
     required: true,
     format: 'string',
     minLength: 8,
-    maxLength: 24,
+    maxLength: 255,
   })
   @IsString()
-  @Length(6, 24)
+  @Length(6, 255)
   @IsNotEmpty()
   readonly password: string;
 }
