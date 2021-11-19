@@ -49,10 +49,6 @@ export class CategoriesService {
     updateCategoryDto: UpdateCategoryDto,
   ): Promise<any> {
     const category = await this.findOneById(id);
-    if (!category) {
-      throw new NotFoundException('Category not exists');
-    }
-
     await category.updateOne(updateCategoryDto);
     return {
       message: 'Update Category Success!',
@@ -60,10 +56,7 @@ export class CategoriesService {
   }
 
   async DeleteOneById(id: string): Promise<any> {
-    const category = await this.findOneById(id);
-    if (!category) {
-      throw new NotFoundException('Category not exists');
-    }
+    await this.findOneById(id);
 
     await this.categoryModel.deleteOne({ _id: id });
     return {
