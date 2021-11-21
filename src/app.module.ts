@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { FlashSalesModule } from './modules/flash-sales/flash-sales.module';
 import { UsersModule } from './modules/users/users.module';
 import { VouchersModule } from './modules/vouchers/vouchers.module';
 
@@ -36,6 +37,7 @@ import { VouchersModule } from './modules/vouchers/vouchers.module';
     AuthModule,
     CategoriesModule,
     VouchersModule,
+    FlashSalesModule,
   ],
 
   controllers: [],

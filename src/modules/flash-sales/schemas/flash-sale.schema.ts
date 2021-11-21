@@ -2,23 +2,15 @@ import * as mongoose from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 import * as moment from 'moment';
 
-const VOUCHER_MODEL = 'voucher';
-const VoucherSchema = new mongoose.Schema(
+const FLASHSALE_MODEL = 'flash-sale';
+const FlashSaleSchema = new mongoose.Schema(
   {
-    code: {
+    flashCode: {
       type: String,
       required: true,
       trim: true,
     },
     quantity: {
-      type: Number,
-      required: true,
-    },
-    discount: {
-      type: Number,
-      required: true,
-    },
-    duration: {
       type: Number,
       required: true,
     },
@@ -29,11 +21,17 @@ const VoucherSchema = new mongoose.Schema(
     timeEnd: {
       type: Date,
     },
+    duration: {
+      type: Number,
+      required: true,
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
-VoucherSchema.pre('save', async function (next) {
+FlashSaleSchema.pre('save', async function (next) {
   try {
     const timeEnd = moment(this.timeStart).add(this.duration, 'd');
 
@@ -43,5 +41,5 @@ VoucherSchema.pre('save', async function (next) {
   }
 });
 
-VoucherSchema.plugin(mongoosePaginate);
-export { VoucherSchema, VOUCHER_MODEL };
+FlashSaleSchema.plugin(mongoosePaginate);
+export { FlashSaleSchema, FLASHSALE_MODEL };
