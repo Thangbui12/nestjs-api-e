@@ -31,7 +31,7 @@ export class UpdateFlashSaleDto {
   @IsNumber()
   @Length(1, 50)
   @IsOptional()
-  readonly quantity: number;
+  readonly quantity?: number;
 
   @ApiProperty({
     example: 40,
@@ -43,7 +43,7 @@ export class UpdateFlashSaleDto {
   @IsNumber()
   @Length(1, 100)
   @IsOptional()
-  readonly discountPercent: number;
+  readonly discountPercent?: number;
 
   @ApiProperty({
     example: '2021-11-24T02:57:00.000+08:00',
@@ -51,7 +51,7 @@ export class UpdateFlashSaleDto {
   })
   @IsDate()
   @IsOptional()
-  readonly timeStart: Date;
+  readonly timeStart?: Date;
 
   @ApiProperty({
     example: '2021-11-30T02:57:00.000+08:00',
@@ -59,7 +59,7 @@ export class UpdateFlashSaleDto {
   })
   @IsDate()
   @IsOptional()
-  readonly timeEnd: Date;
+  readonly timeEnd?: Date;
 
   @ApiProperty({
     example: 5,
@@ -70,5 +70,5 @@ export class UpdateFlashSaleDto {
   @IsNumber()
   @Length(1, 255)
   @IsOptional()
-  readonly duration: number;
+  readonly duration?: number;
 }

@@ -1,11 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import * as mongoose from 'mongoose';
 import {
   IsAlphanumeric,
   IsDate,
+  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsString,
   Length,
+  Max,
+  Min,
 } from 'class-validator';
 
 export class CreateFlashSaleDto {
@@ -31,9 +35,18 @@ export class CreateFlashSaleDto {
     required: true,
   })
   @IsNumber()
-  @Length(1, 50)
+  @Min(0)
   @IsNotEmpty()
   readonly quantity: number;
+
+  @ApiProperty({
+    example: '[61991849b18f7dc875afdd86]',
+    format: 'array',
+    required: true,
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  readonly products: [mongoose.Schema.Types.ObjectId];
 
   @ApiProperty({
     example: 40,
@@ -43,8 +56,9 @@ export class CreateFlashSaleDto {
     required: true,
   })
   @IsNumber()
-  @Length(1, 100)
   @IsNotEmpty()
+  @Min(0)
+  @Max(100)
   readonly discountPercent: number;
 
   @ApiProperty({
@@ -62,7 +76,7 @@ export class CreateFlashSaleDto {
     required: true,
   })
   @IsNumber()
-  @Length(1, 255)
   @IsNotEmpty()
+  @Min(0)
   readonly duration: number;
 }

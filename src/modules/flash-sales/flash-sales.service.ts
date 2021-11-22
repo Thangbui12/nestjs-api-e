@@ -19,7 +19,7 @@ export class FlashSaleService {
   ) {}
 
   async create(createFlashSaleDto: CreateFlashSaleDto): Promise<IFlashSaleDoc> {
-    const { flashCode } = createFlashSaleDto;
+    const { flashCode, products } = createFlashSaleDto;
     const flashSale = await this.flashSaleModel.findOne({ flashCode });
 
     if (flashSale) {

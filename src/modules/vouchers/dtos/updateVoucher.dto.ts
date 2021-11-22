@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   Length,
+  Min,
 } from 'class-validator';
 
 export class UpdateVoucherDto {
@@ -24,6 +25,7 @@ export class UpdateVoucherDto {
     format: 'number',
   })
   @IsNumber()
+  @Min(0)
   @IsOptional()
   readonly quantity?: number;
 
@@ -32,6 +34,7 @@ export class UpdateVoucherDto {
     required: true,
     format: 'number',
   })
+  @Min(0)
   @IsNumber()
   @IsOptional()
   readonly discount?: number;
@@ -43,6 +46,7 @@ export class UpdateVoucherDto {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
   readonly duration?: number;
 
   @ApiProperty({

@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsString,
   Length,
+  Min,
 } from 'class-validator';
 
 export class CreateVoucherDto {
@@ -27,6 +28,7 @@ export class CreateVoucherDto {
   })
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
   readonly quantity: number;
 
   @ApiProperty({
@@ -36,6 +38,7 @@ export class CreateVoucherDto {
   })
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
   readonly discount: number;
 
   @ApiProperty({
