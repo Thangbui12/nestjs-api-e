@@ -3,6 +3,7 @@ import {
   IsAlphanumeric,
   IsDate,
   IsNumber,
+  IsOptional,
   IsString,
   Length,
 } from 'class-validator';
@@ -18,7 +19,8 @@ export class UpdateFlashSaleDto {
   @IsString()
   @Length(6, 6)
   @IsAlphanumeric()
-  readonly flashCode: string;
+  @IsOptional()
+  readonly flashCode?: string;
 
   @ApiProperty({
     example: 5,
@@ -28,13 +30,27 @@ export class UpdateFlashSaleDto {
   })
   @IsNumber()
   @Length(1, 50)
+  @IsOptional()
   readonly quantity: number;
+
+  @ApiProperty({
+    example: 40,
+    minLength: 1,
+    maxLength: 100,
+    format: 'number',
+    required: true,
+  })
+  @IsNumber()
+  @Length(1, 100)
+  @IsOptional()
+  readonly discountPercent: number;
 
   @ApiProperty({
     example: '2021-11-24T02:57:00.000+08:00',
     format: 'Date',
   })
   @IsDate()
+  @IsOptional()
   readonly timeStart: Date;
 
   @ApiProperty({
@@ -42,6 +58,7 @@ export class UpdateFlashSaleDto {
     format: 'Date',
   })
   @IsDate()
+  @IsOptional()
   readonly timeEnd: Date;
 
   @ApiProperty({
@@ -52,5 +69,6 @@ export class UpdateFlashSaleDto {
   })
   @IsNumber()
   @Length(1, 255)
+  @IsOptional()
   readonly duration: number;
 }

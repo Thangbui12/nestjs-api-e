@@ -48,9 +48,6 @@ export class FlashSalesController {
   @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get FlashSale by Id' })
-  @ApiBearerAuth('AccessToken')
-  @Roles(userRole.Admin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   async findOneById(@Param('id') id: string) {
     return this.flashSaleService.findOneById(id);

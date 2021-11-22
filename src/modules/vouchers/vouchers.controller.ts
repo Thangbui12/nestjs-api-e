@@ -47,9 +47,6 @@ export class VouchersController {
 
   @ApiTags('Voucher')
   @ApiOperation({ summary: 'Get Voucher By Id' })
-  @ApiBearerAuth('AccessToken')
-  @Roles(userRole.Admin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async findOne(@Param('id') id: string) {
