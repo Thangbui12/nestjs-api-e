@@ -63,4 +63,8 @@ export class CategoriesService {
       message: 'Delete Success!',
     };
   }
+
+  async findOneByName(name: string): Promise<ICategoryDoc> {
+    return await this.categoryModel.findOne({ name: name });
+  }
 }

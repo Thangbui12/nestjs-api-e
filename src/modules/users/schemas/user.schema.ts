@@ -48,6 +48,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'default-avatar.jpg',
   },
+  vouchers: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'voucher',
+    required: false,
+  },
 });
 
 UserSchema.pre('save', async function (next) {

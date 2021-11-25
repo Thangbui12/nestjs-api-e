@@ -8,7 +8,7 @@ export interface IProduct {
   readonly images: [string];
   readonly quantity: number;
   readonly description: string;
-  readonly flashSale?: mongoose.Schema.Types.ObjectId;
+  readonly flashSale?: string;
 }
 
 export type IProductDoc = IProduct & Document;

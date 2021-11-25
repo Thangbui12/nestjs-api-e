@@ -16,9 +16,10 @@ import { USER_MODEL } from './schemas/user.schema';
 import { CreateUserDto } from './dtos/user.dto';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
 import { IUserDoc } from './interfaces/user.interface';
-import { MailerService } from '@nestjs-modules/mailer';
 import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { ChangePasswordDto } from './dtos/user-password.dto';
+import { EmailService } from '../email/email.service';
+import { SendEmailDto } from '../email/dtos/sendEmail.dto';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +28,7 @@ export class UsersService {
     private readonly authService: AuthService,
     @InjectModel(USER_MODEL)
     private readonly userModel: Model<IUserDoc>,
-    private readonly mailerService: MailerService,
+    private readonly emailService: EmailService,
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<IUserDoc> {
@@ -86,11 +87,16 @@ export class UsersService {
     let baseUrl = `${process.env.BASE_URL}:${process.env.PORT}/api/reset-password/`;
     //send link token to Email
     const subject = 'Reset Password';
-    const text = `
+    const content = `
     -----------------------------RESET PASSWORD-----------------------------
     Please click here to reset your password:   ${baseUrl}${token}
     `;
-    this.sendMailer(forgotPasswordDto.email, subject, text);
+    const options: SendEmailDto = {
+      recipient: forgotPasswordDto.email,
+      subject,
+      content,
+    };
+    this.emailService.sendMail(options);
 
     await user.updateOne({
       resetPasswordToken: token,
@@ -157,18 +163,6 @@ export class UsersService {
 
   async validatorUser(username: string, email: string): Promise<any> {
     return this.userModel.findOne({ username, email });
-  }
-
-  async sendMailer(email: string, subject: string, text: string): Promise<any> {
-    try {
-      return await this.mailerService.sendMail({
-        to: email,
-        subject,
-        text: `${text}`,
-      });
-    } catch (err) {
-      console.log('ERROR', err.message);
-    }
   }
 
   async hashPassword(password: string) {

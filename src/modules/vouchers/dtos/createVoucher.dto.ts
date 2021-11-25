@@ -51,7 +51,7 @@ export class CreateVoucherDto {
   readonly duration: number;
 
   @ApiProperty({
-    example: '2021-11-19T03:57:00+08:00',
+    example: '2021-11-19T03:57:00+07:00',
     required: true,
     format: 'Date',
   })

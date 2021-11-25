@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import * as mongoose from 'mongoose';
 import {
   IsAlphanumeric,
+  IsArray,
   IsDate,
   IsMongoId,
   IsNotEmpty,
@@ -40,13 +41,13 @@ export class CreateFlashSaleDto {
   readonly quantity: number;
 
   @ApiProperty({
-    example: '[61991849b18f7dc875afdd86]',
+    example: '["619e95de55588e6257e04730","619e9110884184bb71aaf96a"]',
     format: 'array',
     required: true,
   })
-  @IsMongoId()
+  @IsArray()
   @IsNotEmpty()
-  readonly products: [mongoose.Schema.Types.ObjectId];
+  readonly products: [type: mongoose.Schema.Types.ObjectId];
 
   @ApiProperty({
     example: 40,
@@ -62,7 +63,7 @@ export class CreateFlashSaleDto {
   readonly discountPercent: number;
 
   @ApiProperty({
-    example: '2021-11-22T02:57:00.000+08:00',
+    example: '2021-11-22T02:57:00.000+07:00',
     format: 'Date',
   })
   @IsDate()

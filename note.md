@@ -1,0 +1,29 @@
+- Product
+  - Upload image (su dung file system)
+  - Gia cua tung product
+  - Category ung voi tung product
+  - Search: Product Code, Product Name
+  - Sort: CreatedAt, Gia
+  - Filter: Category
+- Category
+  - Fix cung category
+- Flashsale
+  - Time (Config time start-end)
+  - Gia product (giam theo % tren tat ca san pham)
+  - Notification (email send all user) conten email free
+  - cronjob (cron tab)
+- User
+  - Login
+  - Register
+  - Reset password
+- Voucher
+  - Manager voucher
+    - Gioi han voucher tren tung user(trong user database co truong voucher\*array )(Check voucher column neu cos voucher thi khong lay them duocj nua)
+    - Gioi han voucher theo ngay
+    - Toi da tru bao nhieu tien
+    - Toi thieu app dung voucher voi don hang co gia tri bao nhieu
+  - Check dieu kien (su dung query)
+  - transaction
+- Order
+  - Manger order
+  - Tinh toan va gia

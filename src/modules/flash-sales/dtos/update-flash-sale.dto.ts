@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import * as mongoose from 'mongoose';
 import {
   IsAlphanumeric,
+  IsArray,
   IsDate,
   IsNumber,
   IsOptional,
@@ -21,6 +23,15 @@ export class UpdateFlashSaleDto {
   @IsAlphanumeric()
   @IsOptional()
   readonly flashCode?: string;
+
+  @ApiProperty({
+    example: '["619e95de55588e6257e04730","619e9110884184bb71aaf96a"]',
+    format: 'array',
+    required: true,
+  })
+  @IsArray()
+  @IsOptional()
+  readonly products?: [mongoose.Schema.Types.ObjectId];
 
   @ApiProperty({
     example: 5,

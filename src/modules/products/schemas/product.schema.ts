@@ -37,9 +37,6 @@ const ProductSchema = new mongoose.Schema(
       ref: 'flash-sale',
       required: false,
     },
-    flashSalePrice: {
-      type: Number,
-    },
   },
   { timestamps: true },
 );

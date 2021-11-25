@@ -72,5 +72,5 @@ export class UpdateProductDto {
   @IsMongoId()
   @MinLength(0)
   @IsOptional()
-  readonly flashSale?: mongoose.Schema.Types.ObjectId;
+  readonly flashSale?: string;
 }

@@ -8,8 +8,12 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Req,
+  Request,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { query } from 'express';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductsService } from './products.service';
@@ -29,9 +33,12 @@ export class ProductsController {
   @ApiTags('Product')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all products' })
+  // @ApiQuery({ name: 'quantity' })
+  // @ApiQuery({ name: 'price' })
+  @ApiQuery({ name: 'category', example: 'Cat' })
   @Get('')
-  async findAll() {
-    return this.productsService.findAll();
+  async findAll(@Query('category') query: string) {
+    return this.productsService.findAll(query);
   }
 
   @ApiTags('Product')

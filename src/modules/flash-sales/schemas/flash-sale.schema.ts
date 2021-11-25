@@ -15,7 +15,7 @@ const FlashSaleSchema = new mongoose.Schema(
       required: true,
     },
     products: {
-      type: Array,
+      type: [mongoose.Schema.Types.ObjectId],
       required: true,
     },
     discountPercent: { type: Number, required: true },
