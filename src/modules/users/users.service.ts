@@ -20,6 +20,7 @@ import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { ChangePasswordDto } from './dtos/user-password.dto';
 import { EmailService } from '../email/email.service';
 import { SendEmailDto } from '../email/dtos/sendEmail.dto';
+import { IJwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Injectable()
 export class UsersService {
@@ -147,6 +148,18 @@ export class UsersService {
     return {
       message: 'Password changed!',
     };
+  }
+
+  async findOne(payload: IJwtPayload) {
+    const user = await this.userModel.findOne({
+      username: payload.username,
+      email: payload.email,
+    });
+    if (!user) {
+      throw new NotFoundException('User not existed!');
+    }
+
+    return user;
   }
 
   //METHOD

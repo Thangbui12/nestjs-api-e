@@ -18,11 +18,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dtos/category.dto';
 
+@ApiTags('Category')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}
 
-  @ApiTags('Category')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create Category' })
   @ApiBearerAuth('AccessToken')
@@ -33,7 +33,6 @@ export class CategoriesController {
     return this.categoryService.create(createCategoryDto);
   }
 
-  @ApiTags('Category')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get All Categories' })
   @ApiBearerAuth('AccessToken')
@@ -44,7 +43,6 @@ export class CategoriesController {
     return this.categoryService.findAll();
   }
 
-  @ApiTags('Category')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get Category By Id' })
   @ApiBearerAuth('AccessToken')
@@ -55,7 +53,6 @@ export class CategoriesController {
     return this.categoryService.findOneById(id);
   }
 
-  @ApiTags('Category')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update Category By Id' })
   @ApiBearerAuth('AccessToken')
@@ -69,7 +66,6 @@ export class CategoriesController {
     return this.categoryService.updateOneById(id, updateCategoryDto);
   }
 
-  @ApiTags('Category')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete Category By Id' })
   @ApiBearerAuth('AccessToken')

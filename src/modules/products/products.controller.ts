@@ -9,20 +9,17 @@ import {
   Post,
   Put,
   Query,
-  Req,
-  Request,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { query } from 'express';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductsService } from './products.service';
 
+@ApiTags('Product')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @ApiTags('Product')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create Product' })
   @Post('create')
@@ -30,7 +27,6 @@ export class ProductsController {
     return this.productsService.create(createProductDto);
   }
 
-  @ApiTags('Product')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all products' })
   // @ApiQuery({ name: 'quantity' })
@@ -41,7 +37,6 @@ export class ProductsController {
     return this.productsService.findAll(query);
   }
 
-  @ApiTags('Product')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get product by Id' })
   @Get(':id')
@@ -49,7 +44,6 @@ export class ProductsController {
     return this.productsService.findOneById(id);
   }
 
-  @ApiTags('Product')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update product by Id' })
   @Put(':id')
@@ -60,7 +54,6 @@ export class ProductsController {
     return this.productsService.updateOneById(id, updateProductDto);
   }
 
-  @ApiTags('Product')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete product by Id' })
   @Delete(':id')

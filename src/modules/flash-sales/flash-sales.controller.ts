@@ -19,11 +19,11 @@ import { CreateFlashSaleDto } from './dtos/create-flash-sale.dto';
 import { UpdateFlashSaleDto } from './dtos/update-flash-sale.dto';
 import { FlashSaleService } from './flash-sales.service';
 
+@ApiTags('Flash Sale')
 @Controller('flash-sales')
 export class FlashSalesController {
   constructor(private readonly flashSaleService: FlashSaleService) {}
 
-  @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create FlashSale' })
   @ApiBearerAuth('AccessToken')
@@ -34,7 +34,6 @@ export class FlashSalesController {
     return this.flashSaleService.create(createFlashSaleDto);
   }
 
-  @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all Flash Sale' })
   @ApiBearerAuth('AccessToken')
@@ -45,7 +44,6 @@ export class FlashSalesController {
     return this.flashSaleService.findAll();
   }
 
-  @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get FlashSale by Id' })
   @Get(':id')
@@ -53,7 +51,6 @@ export class FlashSalesController {
     return this.flashSaleService.findOneById(id);
   }
 
-  @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update FlashSale by Id' })
   @ApiBearerAuth('AccessToken')
@@ -67,7 +64,6 @@ export class FlashSalesController {
     return this.flashSaleService.updateOneById(id, updateFlashSaleDto);
   }
 
-  @ApiTags('Flash Sale')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete One by Id' })
   @ApiBearerAuth('AccessToken')

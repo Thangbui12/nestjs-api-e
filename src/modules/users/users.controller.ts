@@ -13,9 +13,11 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { userRole } from 'src/common/common.constans';
+import { GetUser } from 'src/common/decorators/getUser.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesGuard } from 'src/common/guards/role.guards';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { IJwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
 import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { ChangePasswordDto } from './dtos/user-password.dto';
@@ -25,14 +27,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @ApiTags('Auth')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Register user' })
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.register(createUserDto);
-  }
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
@@ -44,7 +38,14 @@ export class UsersController {
   async findAll() {
     return this.usersService.findAll();
   }
-
+  @ApiTags('User')
+  @ApiOperation({ summary: 'Get profile' })
+  @ApiBearerAuth('AccessToken')
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  findMe(@GetUser() payload: IJwtPayload) {
+    return this.usersService.findOne(payload);
+  }
   @ApiTags('User')
   @ApiOperation({ summary: 'Get one user by ID' })
   @ApiBearerAuth('AccessToken')
@@ -58,6 +59,8 @@ export class UsersController {
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete user by ID' })
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async deleteOneById(@Param('id') id: string) {
     return this.usersService.deleteOneById(id);

@@ -19,11 +19,11 @@ import { CreateVoucherDto } from './dtos/createVoucher.dto';
 import { UpdateVoucherDto } from './dtos/updateVoucher.dto';
 import { VouchersService } from './vouchers.service';
 
+@ApiTags('Voucher')
 @Controller('vouchers')
 export class VouchersController {
   constructor(private readonly voucherService: VouchersService) {}
 
-  @ApiTags('Voucher')
   @ApiOperation({ summary: 'Create Voucher' })
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
@@ -34,7 +34,6 @@ export class VouchersController {
     return this.voucherService.create(createVoucherDto);
   }
 
-  @ApiTags('Voucher')
   @ApiOperation({ summary: 'Get All Vouchers' })
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
@@ -45,7 +44,6 @@ export class VouchersController {
     return this.voucherService.findAll();
   }
 
-  @ApiTags('Voucher')
   @ApiOperation({ summary: 'Get Voucher By Id' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
@@ -53,7 +51,6 @@ export class VouchersController {
     return this.voucherService.findOneById(id);
   }
 
-  @ApiTags('Voucher')
   @ApiOperation({ summary: 'Update Voucher' })
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
@@ -67,7 +64,6 @@ export class VouchersController {
     return this.voucherService.updateOneById(id, updateVoucherDto);
   }
 
-  @ApiTags('Voucher')
   @ApiOperation({ summary: 'Update Voucher' })
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)

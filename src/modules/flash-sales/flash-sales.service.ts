@@ -9,15 +9,12 @@ import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 import { Model } from 'mongoose';
 import _ from 'lodash';
-import { SendEmailDto } from '../email/dtos/sendEmail.dto';
 import { UsersService } from '../users/users.service';
 import { CreateFlashSaleDto } from './dtos/create-flash-sale.dto';
 import { UpdateFlashSaleDto } from './dtos/update-flash-sale.dto';
 import { IFlashSaleDoc } from './interfaces/flash-sale.interface';
 import { FLASHSALE_MODEL } from './schemas/flash-sale.schema';
 import { EmailScheduleService } from '../email-schedule/email-schedule.service';
-import { EmailScheduleDto } from '../email-schedule/dtos/emailSchedule.dto';
-import { SendMailOptions } from 'nodemailer';
 import { ProductsService } from '../products/products.service';
 
 @Injectable()
