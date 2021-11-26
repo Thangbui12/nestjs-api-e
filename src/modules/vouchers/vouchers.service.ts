@@ -21,7 +21,6 @@ export class VouchersService {
   async create(createVoucherDto: CreateVoucherDto): Promise<IVoucherDoc> {
     const { code } = createVoucherDto;
     const voucher = await this.voucherModel.findOne({ code });
-
     if (voucher) {
       throw new HttpException('Voucher already exists', HttpStatus.BAD_REQUEST);
     }
@@ -36,7 +35,6 @@ export class VouchersService {
 
   async findOneById(id: string): Promise<IVoucherDoc> {
     const voucher = await this.voucherModel.findById({ _id: id });
-
     if (!voucher) {
       throw new NotFoundException('Voucher not exists');
     }
@@ -46,9 +44,7 @@ export class VouchersService {
 
   async deleteOneById(id: string): Promise<any> {
     await this.findOneById(id);
-
     await this.voucherModel.deleteOne({ _id: id });
-
     return {
       message: 'Delete Success!',
     };

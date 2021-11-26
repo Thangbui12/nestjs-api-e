@@ -7,7 +7,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
@@ -21,7 +20,6 @@ import { IJwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { ForgotPasswordDto } from './dtos/forgotPassword.dto';
 import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { ChangePasswordDto } from './dtos/user-password.dto';
-import { CreateUserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -35,7 +33,7 @@ export class UsersController {
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findAll() {
+  findAll() {
     return this.usersService.findAll();
   }
   @ApiTags('User')
@@ -52,7 +50,7 @@ export class UsersController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.usersService.findOneById(id);
   }
 
@@ -62,7 +60,7 @@ export class UsersController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  async deleteOneById(@Param('id') id: string) {
+  deleteOneById(@Param('id') id: string) {
     return this.usersService.deleteOneById(id);
   }
 
@@ -73,41 +71,41 @@ export class UsersController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('email/:slug')
-  async findOneByEmail(@Param('slug') slug: string) {
+  findOneByEmail(@Param('slug') slug: string) {
     if (!slug) {
       throw new BadRequestException('Missing `slug` URL parameter');
     }
 
-    return await this.usersService.findOneByEmail(slug);
+    return this.usersService.findOneByEmail(slug);
   }
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Change password' })
   @Put(':id/change-password')
-  async changeUserPassword(
+  changeUserPassword(
     @Param('id') id: string,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    return await this.usersService.changePassword(id, changePasswordDto);
+    return this.usersService.changePassword(id, changePasswordDto);
   }
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Forgot password' })
   @Put('forgot-password')
-  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
-    return await this.usersService.forgotPassword(forgotPasswordDto);
+  forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.usersService.forgotPassword(forgotPasswordDto);
   }
 
   @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Reset Password' })
   @Put('reset-password/:token')
-  async resetPassword(
+  resetPassword(
     @Param('token') token: string,
     @Body() resetPasswordDto: ResetPasswordDto,
   ) {
-    return await this.usersService.resetPassword(token, resetPasswordDto);
+    return this.usersService.resetPassword(token, resetPasswordDto);
   }
 }

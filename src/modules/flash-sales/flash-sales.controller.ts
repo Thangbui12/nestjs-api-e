@@ -30,7 +30,7 @@ export class FlashSalesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
-  async create(@Body() createFlashSaleDto: CreateFlashSaleDto) {
+  create(@Body() createFlashSaleDto: CreateFlashSaleDto) {
     return this.flashSaleService.create(createFlashSaleDto);
   }
 
@@ -40,14 +40,14 @@ export class FlashSalesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  async findAll() {
+  findAll() {
     return this.flashSaleService.findAll();
   }
 
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get FlashSale by Id' })
   @Get(':id')
-  async findOneById(@Param('id') id: string) {
+  findOneById(@Param('id') id: string) {
     return this.flashSaleService.findOneById(id);
   }
 
@@ -57,7 +57,7 @@ export class FlashSalesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
-  async updateOneById(
+  updateOneById(
     @Param('id') id: string,
     @Body() updateFlashSaleDto: UpdateFlashSaleDto,
   ) {
@@ -70,7 +70,7 @@ export class FlashSalesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  async deleteOneById(@Param('id') id: string) {
+  deleteOneById(@Param('id') id: string) {
     return this.flashSaleService.deleteOneById(id);
   }
 }

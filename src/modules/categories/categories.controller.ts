@@ -29,7 +29,7 @@ export class CategoriesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
+  create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
 
@@ -39,7 +39,7 @@ export class CategoriesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  async findAll() {
+  findAll() {
     return this.categoryService.findAll();
   }
 
@@ -49,7 +49,7 @@ export class CategoriesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.categoryService.findOneById(id);
   }
 
@@ -59,7 +59,7 @@ export class CategoriesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
-  async updateOneById(
+  updateOneById(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
@@ -72,7 +72,7 @@ export class CategoriesController {
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  async deleteOneById(@Param('id') id: string) {
+  deleteOneById(@Param('id') id: string) {
     return this.categoryService.DeleteOneById(id);
   }
 }

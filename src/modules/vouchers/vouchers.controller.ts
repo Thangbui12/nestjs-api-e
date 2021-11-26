@@ -30,7 +30,7 @@ export class VouchersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post('create')
-  async create(@Body() createVoucherDto: CreateVoucherDto) {
+  create(@Body() createVoucherDto: CreateVoucherDto) {
     return this.voucherService.create(createVoucherDto);
   }
 
@@ -40,14 +40,14 @@ export class VouchersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll() {
+  findAll() {
     return this.voucherService.findAll();
   }
 
   @ApiOperation({ summary: 'Get Voucher By Id' })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) {
     return this.voucherService.findOneById(id);
   }
 
@@ -57,7 +57,7 @@ export class VouchersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Put(':id')
-  async updateOneById(
+  updateOneById(
     @Param('id') id: string,
     @Body() updateVoucherDto: UpdateVoucherDto,
   ) {
@@ -70,7 +70,7 @@ export class VouchersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
-  async deleteOneById(@Param('id') id: string) {
+  deleteOneById(@Param('id') id: string) {
     return this.voucherService.deleteOneById(id);
   }
 }
