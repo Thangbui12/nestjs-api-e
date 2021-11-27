@@ -10,10 +10,6 @@ const FlashSaleSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
-    },
     products: {
       type: [mongoose.Schema.Types.ObjectId],
       required: true,

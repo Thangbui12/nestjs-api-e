@@ -65,6 +65,10 @@ export class CategoriesService {
   }
 
   async findOneByName(name: string): Promise<ICategoryDoc> {
-    return await this.categoryModel.findOne({ name: name });
+    const category = await this.categoryModel.findOne({ name: name });
+    if (!category) {
+      throw new NotFoundException('Category not exists!');
+    }
+    return category;
   }
 }

@@ -2,6 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { MulterModule } from '@nestjs/platform-express';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
@@ -34,6 +35,9 @@ import { VouchersModule } from './modules/vouchers/vouchers.module';
           },
         },
       }),
+    }),
+    MulterModule.register({
+      dest: './files',
     }),
     ScheduleModule.forRoot(),
     UsersModule,

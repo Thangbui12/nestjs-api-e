@@ -21,6 +21,7 @@ import { ChangePasswordDto } from './dtos/user-password.dto';
 import { EmailService } from '../email/email.service';
 import { SendEmailDto } from '../email/dtos/sendEmail.dto';
 import { IJwtPayload } from '../auth/interfaces/jwt-payload.interface';
+import { UpdateVoucherUserDto } from './dtos/update-voucher-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -185,5 +186,12 @@ export class UsersService {
       salt,
       hashed,
     };
+  }
+
+  async voucherClaim(userId: string, voucherId: UpdateVoucherUserDto) {
+    await this.userModel.updateOne(
+      { _id: userId },
+      { $addToSet: { vouchers: [voucherId] } },
+    );
   }
 }

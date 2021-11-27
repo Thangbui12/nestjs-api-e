@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoriesService } from '../categories/categories.service';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { DeleteImagesDto } from './dtos/delete-images.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { IProductDoc } from './interfaces/pruduct.schema';
 import { PRODUCT_MODEL } from './schemas/product.schema';
@@ -32,17 +33,22 @@ export class ProductsService {
     return await productCreate.save();
   }
 
-  async findAll(queryString): Promise<IProductDoc[]> {
-    const category = await this.categoriesService.findOneByName(queryString);
-
-    return await this.productModel
-      .find({ category: category._id })
+  async findAll(queryString: string): Promise<IProductDoc[]> {
+    let checkCategory = {};
+    if (!!queryString) {
+      const category = await this.categoriesService.findOneByName(queryString);
+      checkCategory = { category: category._id };
+    }
+    const result = await this.productModel
+      .find(checkCategory)
       .sort({ quantity: 1, createdAt: -1 })
       .populate({ path: 'category', select: ['name'] })
       .populate({
         path: 'flashSale',
         select: ['-createdAt', '-updatedAt', '-__v', '-products'],
       });
+
+    return result;
   }
 
   async findOneById(id: string): Promise<IProductDoc> {
@@ -70,6 +76,33 @@ export class ProductsService {
 
     return {
       message: 'Delete Success!',
+    };
+  }
+
+  async uploadProductImages(id: string, files: any) {
+    const product = await this.findOneById(id);
+
+    files.map(async (file: any) => {
+      await product.updateOne({ $push: { images: file.path } });
+    });
+
+    return {
+      message: 'Upload images successfully!',
+    };
+  }
+
+  async deleteProductImages(id: string, deleteImages: DeleteImagesDto) {
+    const { images } = deleteImages;
+    const product = await this.findOneById(id);
+    const productImages = product.images;
+
+    const result = productImages.filter(
+      (productImage) => !images.includes(productImage.replace('files/', '')),
+    );
+
+    await product.updateOne({ images: result });
+    return {
+      message: 'Remove images successfully',
     };
   }
 }

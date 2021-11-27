@@ -3,7 +3,6 @@ import * as mongoose from 'mongoose';
 
 export interface IFlashSale {
   readonly flashCode: string;
-  readonly quantity: number;
   readonly products: [mongoose.Schema.Types.ObjectId];
   readonly discountPercent: number;
   readonly timeStart: Date;

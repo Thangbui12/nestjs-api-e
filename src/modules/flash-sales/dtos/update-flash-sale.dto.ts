@@ -34,17 +34,6 @@ export class UpdateFlashSaleDto {
   readonly products?: [mongoose.Schema.Types.ObjectId];
 
   @ApiProperty({
-    example: 5,
-    minLength: 1,
-    maxLength: 50,
-    format: 'number',
-  })
-  @IsNumber()
-  @Length(1, 50)
-  @IsOptional()
-  readonly quantity?: number;
-
-  @ApiProperty({
     example: 40,
     minLength: 1,
     maxLength: 100,

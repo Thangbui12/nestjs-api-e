@@ -9,9 +9,21 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from 'src/common/file-upload.utils';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { DeleteImagesDto } from './dtos/delete-images.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductsService } from './products.service';
 
@@ -31,7 +43,7 @@ export class ProductsController {
   @ApiOperation({ summary: 'Get all products' })
   // @ApiQuery({ name: 'quantity' })
   // @ApiQuery({ name: 'price' })
-  @ApiQuery({ name: 'category', example: 'Cat' })
+  @ApiQuery({ name: 'category', example: 'Cat', required: false })
   @Get('')
   findAll(@Query('category') query: string) {
     return this.productsService.findAll(query);
@@ -59,5 +71,41 @@ export class ProductsController {
   @Delete(':id')
   deleteOneById(@Param('id') id: string) {
     return this.productsService.deleteOneById(id);
+  }
+
+  @Post(':id/upload')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
+  @ApiOperation({ summary: "Upload product's images" })
+  @UseInterceptors(
+    FilesInterceptor('files', 20, {
+      storage: diskStorage({
+        destination: './files',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadImages(@Param('id') id: string, @UploadedFiles() files: any) {
+    return this.productsService.uploadProductImages(id, files);
+  }
+
+  @Put(':id/remove-images')
+  @ApiOperation({ summary: "Remove product' images" })
+  removeImages(@Param('id') id: string, @Body() deleteImages: DeleteImagesDto) {
+    return this.productsService.deleteProductImages(id, deleteImages);
   }
 }

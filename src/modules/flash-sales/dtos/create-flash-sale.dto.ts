@@ -4,7 +4,6 @@ import {
   IsAlphanumeric,
   IsArray,
   IsDate,
-  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -27,18 +26,6 @@ export class CreateFlashSaleDto {
   @IsAlphanumeric()
   @IsNotEmpty()
   readonly flashCode: string;
-
-  @ApiProperty({
-    example: 10,
-    minLength: 1,
-    maxLength: 50,
-    format: 'number',
-    required: true,
-  })
-  @IsNumber()
-  @Min(0)
-  @IsNotEmpty()
-  readonly quantity: number;
 
   @ApiProperty({
     example: '["619e95de55588e6257e04730","619e9110884184bb71aaf96a"]',
