@@ -53,6 +53,11 @@ const UserSchema = new mongoose.Schema({
     ref: 'voucher',
     required: false,
   },
+  orders: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'order',
+    required: false,
+  },
 });
 
 UserSchema.pre('save', async function (next) {

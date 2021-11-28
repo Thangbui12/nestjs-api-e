@@ -12,6 +12,7 @@ export interface IUser {
   readonly avatar: string;
   salt: string;
   readonly vouchers: [mongoose.Schema.Types.ObjectId];
+  readonly orders: [mongoose.Schema.Types.ObjectId];
 }
 
 export type IUserDoc = IUser & Document;

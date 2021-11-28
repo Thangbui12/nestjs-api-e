@@ -83,7 +83,7 @@ export class VouchersService {
     }
     await voucher.updateOne({ quantity: changedQuantity });
     return {
-      message: 'Update Voucher Success',
+      message: 'Claim Voucher Success',
     };
   }
 

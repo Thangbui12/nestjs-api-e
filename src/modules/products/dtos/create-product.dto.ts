@@ -3,7 +3,6 @@ import {
   IsMongoId,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   Length,
   Min,

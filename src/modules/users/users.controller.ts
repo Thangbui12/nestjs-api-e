@@ -22,11 +22,11 @@ import { ResetPasswordDto } from './dtos/resetPassword.dto';
 import { ChangePasswordDto } from './dtos/user-password.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('User')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all users' })
   @Get()
@@ -36,7 +36,7 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
-  @ApiTags('User')
+
   @ApiOperation({ summary: 'Get profile' })
   @ApiBearerAuth('AccessToken')
   @UseGuards(JwtAuthGuard)
@@ -44,7 +44,15 @@ export class UsersController {
   findMe(@GetUser() payload: IJwtPayload) {
     return this.usersService.findOne(payload);
   }
-  @ApiTags('User')
+
+  @ApiOperation({ summary: "Get me' orders" })
+  @ApiBearerAuth('AccessToken')
+  @UseGuards(JwtAuthGuard)
+  @Get('orders')
+  findMeOrder(@GetUser() payload: IJwtPayload) {
+    return this.usersService.findMeOrder(payload);
+  }
+
   @ApiOperation({ summary: 'Get one user by ID' })
   @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
@@ -54,9 +62,9 @@ export class UsersController {
     return this.usersService.findOneById(id);
   }
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete user by ID' })
+  @ApiBearerAuth('AccessToken')
   @Roles(userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
@@ -64,7 +72,6 @@ export class UsersController {
     return this.usersService.deleteOneById(id);
   }
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('AccessToken')
   @ApiOperation({ summary: 'Get user by Email' })
@@ -79,7 +86,6 @@ export class UsersController {
     return this.usersService.findOneByEmail(slug);
   }
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Change password' })
   @Put(':id/change-password')
@@ -90,7 +96,6 @@ export class UsersController {
     return this.usersService.changePassword(id, changePasswordDto);
   }
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Forgot password' })
   @Put('forgot-password')
@@ -98,7 +103,6 @@ export class UsersController {
     return this.usersService.forgotPassword(forgotPasswordDto);
   }
 
-  @ApiTags('User')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Reset Password' })
   @Put('reset-password/:token')

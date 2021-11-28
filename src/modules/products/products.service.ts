@@ -10,7 +10,7 @@ import { CategoriesService } from '../categories/categories.service';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { DeleteImagesDto } from './dtos/delete-images.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
-import { IProductDoc } from './interfaces/pruduct.schema';
+import { IProductDoc } from './interfaces/pruduct.interface';
 import { PRODUCT_MODEL } from './schemas/product.schema';
 
 @Injectable()

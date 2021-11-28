@@ -36,9 +36,9 @@ export class VouchersController {
     return this.voucherService.create(createVoucherDto);
   }
 
-  @ApiOperation({ summary: 'Update Voucher' })
+  @ApiOperation({ summary: 'Claim Voucher' })
   @ApiBearerAuth('AccessToken')
-  @Roles(userRole.User)
+  @Roles(userRole.User, userRole.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @HttpCode(HttpStatus.OK)
   @Get('claim/:id')
@@ -58,6 +58,9 @@ export class VouchersController {
 
   @ApiOperation({ summary: 'Get Voucher By Id' })
   @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.voucherService.findOneById(id);

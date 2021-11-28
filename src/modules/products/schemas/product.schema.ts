@@ -30,7 +30,7 @@ const ProductSchema = new mongoose.Schema(
     description: {
       type: String,
       required: false,
-      default: "description's Product",
+      default: "Description's Product",
     },
     flashSale: {
       type: mongoose.Schema.Types.ObjectId,

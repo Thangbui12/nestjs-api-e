@@ -7,6 +7,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { FlashSalesModule } from './modules/flash-sales/flash-sales.module';
+import { OrdersModule } from './modules/orders/orders.module';
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { VouchersModule } from './modules/vouchers/vouchers.module';
@@ -46,6 +47,7 @@ import { VouchersModule } from './modules/vouchers/vouchers.module';
     VouchersModule,
     FlashSalesModule,
     ProductsModule,
+    OrdersModule,
   ],
 
   controllers: [],

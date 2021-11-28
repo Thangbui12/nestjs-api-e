@@ -151,7 +151,7 @@ export class UsersService {
     };
   }
 
-  async findOne(payload: IJwtPayload) {
+  async findOne(payload: IJwtPayload): Promise<any> {
     const user = await this.userModel.findOne({
       username: payload.username,
       email: payload.email,
@@ -161,6 +161,17 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async findMeOrder(payload: IJwtPayload): Promise<any> {
+    const user = await this.findOne(payload);
+    const ordersPopulated = await user.populate({
+      path: 'orders',
+      select: ['-createdAt', '-updatedAt', '-__v'],
+    });
+    return {
+      orders: ordersPopulated.orders,
+    };
   }
 
   //METHOD

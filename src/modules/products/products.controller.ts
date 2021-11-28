@@ -11,9 +11,11 @@ import {
   Query,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiOperation,
@@ -21,7 +23,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import { userRole } from 'src/common/common.constans';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { editFileName, imageFileFilter } from 'src/common/file-upload.utils';
+import { RolesGuard } from 'src/common/guards/role.guards';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { DeleteImagesDto } from './dtos/delete-images.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
@@ -34,6 +40,9 @@ export class ProductsController {
 
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create Product' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
@@ -41,6 +50,9 @@ export class ProductsController {
 
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get all products' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   // @ApiQuery({ name: 'quantity' })
   // @ApiQuery({ name: 'price' })
   @ApiQuery({ name: 'category', example: 'Cat', required: false })
@@ -51,6 +63,9 @@ export class ProductsController {
 
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get product by Id' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   findOneById(@Param('id') id: string) {
     return this.productsService.findOneById(id);
@@ -58,6 +73,9 @@ export class ProductsController {
 
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update product by Id' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   updateOneById(
     @Param('id') id: string,
@@ -68,12 +86,18 @@ export class ProductsController {
 
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete product by Id' })
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   deleteOneById(@Param('id') id: string) {
     return this.productsService.deleteOneById(id);
   }
 
   @Post(':id/upload')
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -104,6 +128,9 @@ export class ProductsController {
   }
 
   @Put(':id/remove-images')
+  @ApiBearerAuth('AccessToken')
+  @Roles(userRole.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: "Remove product' images" })
   removeImages(@Param('id') id: string, @Body() deleteImages: DeleteImagesDto) {
     return this.productsService.deleteProductImages(id, deleteImages);
